@@ -18,11 +18,11 @@ TextStyle kTextStyleVerse() => GoogleFonts.lato(
       ),
     );
 
-TextStyle kTextStyleTitle(context) => GoogleFonts.oldStandardTt(
+TextStyle kTextStyleTitle(context, size) => GoogleFonts.oldStandardTt(
       textStyle: TextStyle(
         color: Colors.white,
         letterSpacing: .5,
         fontWeight: FontWeight.w600,
-        fontSize: 28,
+        fontSize: size,
       ),
     );

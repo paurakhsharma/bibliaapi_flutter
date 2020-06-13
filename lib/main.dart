@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:onesheep_test/provider/bible_notifier.dart';
 import 'package:onesheep_test/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,8 +10,9 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return MaterialApp(
+    return ChangeNotifierProvider(
+      create: (context) => BibleNotifier(),
+      child: MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primaryColor: Color(0xffFF2374),
@@ -18,6 +20,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeScreen(),
+    ),
     );
   }
 }
