@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:onesheep_test/models/bible.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-class HttpService {
+class BibleService {
   String _apiKey;
   String _baseUrl;
 

@@ -9,7 +9,7 @@ class BibleNotifier extends ChangeNotifier {
   String _verse = "John 3:16";
   bool _loading = true;
   List _searchResult = [];
-  var httpService = HttpService();
+  var httpService = BibleService();
 
   get bibles => _bibles;
   get selectedBible => _selectedBible;
