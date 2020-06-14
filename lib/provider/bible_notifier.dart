@@ -38,7 +38,7 @@ class BibleNotifier extends ChangeNotifier {
   initialize() async {
     await httpService.loadConfig();
     await getBibles();
-    await getBibleVerse();
+    await getVerseOfTheDay();
     stopLoading();
   }
 
@@ -59,5 +59,12 @@ class BibleNotifier extends ChangeNotifier {
     _searchResult = await httpService.search(searchParam, _selectedBible.bible);
     print('search result: $_searchResult');
     stopLoading();
+  }
+
+  getVerseOfTheDay() async {
+    List verseList = await httpService.getVerseOfTheDay(_selectedBible.bible);
+    _verse = verseList[0];
+    _verseText = verseList[1];
+    notifyListeners();
   }
 }
