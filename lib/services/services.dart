@@ -58,7 +58,7 @@ class BibleService {
       ];
     }
     var searchUrl = Uri.encodeFull(
-        '$_baseUrl/search/$book.js?query=$searchParam&start=0&limit=20&key=$_apiKey');
+        '$_baseUrl/search/$book.js?query=$searchParam&start=0&limit=20&sort=passage&key=$_apiKey');
     print('second url: $searchUrl');
     var searchResponse = await http.get(searchUrl);
     var results = json.decode(searchResponse.body)['results'];

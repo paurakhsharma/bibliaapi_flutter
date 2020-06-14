@@ -59,7 +59,7 @@ class SearchScreen extends StatelessWidget {
                           DropDown(context,
                               bibles: bibleProvider.bibles,
                               dropDownValue: bibleProvider.selectedBible,
-                              onChanged: (value) => bibleProvider.selectBible(value)),
+                              onChanged: (value) => bibleProvider.selectBibleSearch(value)),
                           Divider(
                             thickness: 1,
                             height: 5,

@@ -7,6 +7,7 @@ class BibleNotifier extends ChangeNotifier {
   Bible _selectedBible;
   String _verseText;
   String _verse = "John 3:16";
+  String _searchParam;
   bool _loading = true;
   List _searchResult = [];
   var httpService = BibleService();
@@ -35,6 +36,13 @@ class BibleNotifier extends ChangeNotifier {
     stopLoading();
   }
 
+  selectBibleSearch(selectedBible) async {
+    startLoading();
+    _selectedBible = _bibles.firstWhere((bible) => bible.title == selectedBible);
+    await search(_searchParam);
+    stopLoading();
+  }
+
   initialize() async {
     await httpService.loadConfig();
     await getBibles();
@@ -56,6 +64,7 @@ class BibleNotifier extends ChangeNotifier {
   search(searchParam) async {
     print('search param is: $searchParam');
     startLoading();
+    _searchParam = searchParam;
     _searchResult = await httpService.search(searchParam, _selectedBible.bible);
     print('search result: $_searchResult');
     stopLoading();
