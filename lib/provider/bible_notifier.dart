@@ -6,11 +6,11 @@ class BibleNotifier extends ChangeNotifier {
   List<Bible> _bibles;
   Bible _selectedBible;
   String _verseText;
-  String _verse = "John 3:16";
+  String _verse;
   String _searchParam;
   bool _loading = true;
   List _searchResult = [];
-  var httpService = BibleService();
+  var bibleService = BibleService();
 
   get bibles => _bibles;
   get selectedBible => _selectedBible;
@@ -32,33 +32,44 @@ class BibleNotifier extends ChangeNotifier {
 
   selectBible(selectedBible) async {
     startLoading();
-    _selectedBible = _bibles.firstWhere((bible) => bible.title == selectedBible);
+    setNewBible(selectedBible);
     await getBibleVerse();
     stopLoading();
   }
 
   selectBibleSearch(selectedBible) async {
     startLoading();
-    _selectedBible = _bibles.firstWhere((bible) => bible.title == selectedBible);
+    setNewBible(selectedBible);
     await search(_searchParam);
     stopLoading();
   }
 
+  setNewBible(selectedBible) {
+    _selectedBible = _bibles.firstWhere((bible) => bible.title == selectedBible);
+    bibleService.updateSelectedBible(_selectedBible.bible, _selectedBible.title);
+  }
+
   initialize() async {
-    await httpService.loadConfig();
-    await getBibles();
+    await bibleService.loadConfig();
+    await loadBible();
     await getVerseOfTheDay();
     stopLoading();
+    getBibles();
+  }
+
+  loadBible() async {
+    _selectedBible = await bibleService.loadSelectedBible();
+    _bibles = [_selectedBible];
+    notifyListeners();
   }
 
   getBibleVerse() async {
-    _verseText = await httpService.getVerse(_verse, _selectedBible.bible);
+    _verseText = await bibleService.getVerse(_verse, _selectedBible.bible);
     notifyListeners();
   }
 
   getBibles() async {
-    _bibles = await httpService.getAllBibles();
-    _selectedBible = _bibles[0];
+    _bibles = await bibleService.getAllBibles();
     notifyListeners();
   }
 
@@ -66,13 +77,13 @@ class BibleNotifier extends ChangeNotifier {
     print('search param is: $searchParam');
     startLoading();
     _searchParam = searchParam;
-    _searchResult = await httpService.search(searchParam, _selectedBible.bible);
+    _searchResult = await bibleService.search(searchParam, _selectedBible.bible);
     print('search result: $_searchResult');
     stopLoading();
   }
 
   getVerseOfTheDay() async {
-    List verseList = await httpService.getVerseOfTheDay(_selectedBible.bible);
+    List verseList = await bibleService.getVerseOfTheDay(_selectedBible.bible);
     _verse = verseList[0];
     _verseText = verseList[1];
     notifyListeners();

@@ -56,7 +56,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         DropDown(context,
                             bibles: bibleProvider.bibles,
                             dropDownValue: bibleProvider.selectedBible,
-                            onChanged: (value) => bibleProvider.selectBible(value)),
+                            onChanged: (value) => bibleProvider.selectBible(value),
+                            icon: bibleProvider.bibles.length > 1
+                                ? Icon(Icons.arrow_drop_down)
+                                : SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(),
+                                  )),
                         Divider(
                           thickness: 1,
                           height: 5,

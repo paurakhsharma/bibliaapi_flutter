@@ -1,3 +1,4 @@
+import 'package:onesheep_test/models/bible.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preference {
@@ -7,7 +8,19 @@ class Preference {
     prefs = await SharedPreferences.getInstance();
   }
 
-  getTodayVerse() async {
+  getSelectedBible() {
+    var selectedBible = prefs.getStringList('selectedBible');
+    if (selectedBible == null) {
+      updateSelectedBible(selectedBible[0], selectedBible[1]);
+    }
+    return Bible(bible: selectedBible[0], title: selectedBible[1]);
+  }
+
+  updateSelectedBible(bible, title) {
+    prefs.setStringList('selectedBible', [bible, title]);
+  }
+
+  getTodayVerse() {
     var newVerse;
     DateTime now = DateTime.now();
     var today = prefs.getString('today');

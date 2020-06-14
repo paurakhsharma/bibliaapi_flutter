@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onesheep_test/utilities/constants.dart';
 
-Widget DropDown(context, {@required bibles, @required onChanged, @required dropDownValue}) {
+Widget DropDown(context, {@required bibles, @required onChanged, @required dropDownValue, @required Widget icon}) {
   return DropdownButton(
     underline: Text(''),
     hint: dropDownValue == null
@@ -17,6 +17,7 @@ Widget DropDown(context, {@required bibles, @required onChanged, @required dropD
     iconSize: 50.0,
     iconEnabledColor: Theme.of(context).accentColor,
     style: TextStyle(color: Colors.blue),
+    icon: icon,
     items: bibles.map<DropdownMenuItem>(
       (bible) {
         return DropdownMenuItem<String>(

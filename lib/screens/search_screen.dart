@@ -33,10 +33,13 @@ class SearchScreen extends StatelessWidget {
                   ? Flexible(
                       child: Column(
                         children: <Widget>[
-                          DropDown(context,
-                              bibles: bibleProvider.bibles,
-                              dropDownValue: bibleProvider.selectedBible,
-                              onChanged: (value) => bibleProvider.selectBibleSearch(value)),
+                          DropDown(
+                            context,
+                            bibles: bibleProvider.bibles,
+                            dropDownValue: bibleProvider.selectedBible,
+                            onChanged: (value) => bibleProvider.selectBibleSearch(value),
+                            icon: Icon(Icons.arrow_drop_down),
+                          ),
                           Divider(
                             thickness: 1,
                             height: 5,

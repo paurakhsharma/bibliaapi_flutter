@@ -12,11 +12,19 @@ class BibleService {
   Preference preference = Preference();
 
   loadConfig() async {
+    await preference.initialize();
     var configString = await rootBundle.loadString('config.json');
     final config = json.decode(configString);
     _apiKey = config['api_key'];
     _baseUrl = config['base_url'];
-    getVerseOfTheDay('KJV');
+  }
+
+  loadSelectedBible() async {
+    return preference.getSelectedBible();
+  }
+
+  updateSelectedBible(bible, title) {
+    preference.updateSelectedBible(bible, title);
   }
 
   parseVerse(verse) {
@@ -67,7 +75,6 @@ class BibleService {
   }
 
   getVerseOfTheDay(bible) async {
-    await preference.initialize();
     var newVerse = await preference.getTodayVerse();
     var verseText = await getVerse(newVerse, bible);
     if (verseText == null) {
