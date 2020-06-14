@@ -69,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               !bibleProvider.isLoading
                   ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         DropDown(context,
                             bibles: bibleProvider.bibles,
