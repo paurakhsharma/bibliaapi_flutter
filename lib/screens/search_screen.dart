@@ -1,37 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:onesheep_test/components/dropdown.dart';
+import 'package:onesheep_test/components/searchbar.dart';
 import 'package:onesheep_test/provider/bible_notifier.dart';
 import 'package:onesheep_test/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatelessWidget {
-  final String searchParam;
-
-  SearchScreen({this.searchParam});
-
   @override
   Widget build(BuildContext context) {
     var bibleProvider = Provider.of<BibleNotifier>(context);
-    Widget buildSearchButton() {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: TextField(
-          onSubmitted: (value) => bibleProvider.search(value),
-          style: kTextStyleAction(Theme.of(context).accentColor),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Color(0xffF9F9F9),
-            hintText: 'Lost Sheep',
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            suffixIcon: Icon(
-              Icons.search,
-              color: Theme.of(context).accentColor,
-            ),
-          ),
-        ),
-      );
-    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -43,7 +20,7 @@ class SearchScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              buildSearchButton(),
+              SearchBar((value) => bibleProvider.search(value)),
               SizedBox(
                 height: 10,
               ),

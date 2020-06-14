@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onesheep_test/components/dropdown.dart';
+import 'package:onesheep_test/components/error.dart';
+import 'package:onesheep_test/components/searchbar.dart';
 import 'package:onesheep_test/provider/bible_notifier.dart';
 import 'package:onesheep_test/screens/search_screen.dart';
 import 'package:onesheep_test/utilities/constants.dart';
@@ -20,33 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var bibleProvider = Provider.of<BibleNotifier>(context);
-    Widget buildSearchButton() {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: TextField(
-          onSubmitted: (value) {
-            bibleProvider.search(value);
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => SearchScreen(
-                searchParam: value,
-              ),
-            ));
-          },
-          style: kTextStyleAction(Theme.of(context).accentColor),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Color(0xffF9F9F9),
-            hintText: 'Lost Sheep',
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            suffixIcon: Icon(
-              Icons.search,
-              color: Theme.of(context).accentColor,
-            ),
-          ),
-        ),
-      );
-    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -58,7 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 30,
               ),
-              buildSearchButton(),
+              SearchBar((value) {
+                bibleProvider.search(value);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(),
+                  ),
+                );
+              }),
               SizedBox(
                 height: 10,
               ),
@@ -69,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               !bibleProvider.isLoading
                   ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         DropDown(context,
                             bibles: bibleProvider.bibles,

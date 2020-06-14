@@ -18,6 +18,7 @@ class BibleNotifier extends ChangeNotifier {
   get verse => _verse;
   get isLoading => _loading;
   get searchResult => _searchResult;
+  get searchParam => _searchParam;
 
   startLoading() {
     _loading = true;
