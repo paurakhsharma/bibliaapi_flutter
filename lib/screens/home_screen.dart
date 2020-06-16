@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:onesheep_test/components/dropdown.dart';
-import 'package:onesheep_test/components/error.dart';
 import 'package:onesheep_test/components/searchbar.dart';
 import 'package:onesheep_test/provider/bible_notifier.dart';
 import 'package:onesheep_test/screens/search_screen.dart';
