@@ -1,3 +1,5 @@
+![Flutter CI](https://github.com/paurakhsharma/onesheep_test/workflows/Flutter%20CI/badge.svg)
+
 # onesheep_test
 
 A new Flutter project.
@@ -14,8 +16,3 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-
-Useful apis:
-https://api.biblia.com/v1/bible/content/LEB.json?passage=John3.16-20&style=oneVersePerLine&key=fd37d8f28e95d3be8cb4fbc37e15e18e
-
-
