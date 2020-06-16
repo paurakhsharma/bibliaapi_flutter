@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 import 'package:onesheep_test/models/bible.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:onesheep_test/services/preference.dart';
@@ -10,6 +10,7 @@ class BibleService {
   String _baseUrl;
   List _books;
   Preference preference = Preference();
+  Client client = Client();
 
   loadConfig() async {
     await preference.initialize();
@@ -19,7 +20,7 @@ class BibleService {
     _baseUrl = config['base_url'];
   }
 
-  loadSelectedBible() async {
+  Bible loadSelectedBible() {
     return preference.getSelectedBible();
   }
 
@@ -36,16 +37,16 @@ class BibleService {
     var url =
         '$_baseUrl/content/$bible.json?passage=$formatedVerse&style=bibleTextOnly&key=$_apiKey';
     print('url is: $url');
-    var response = await http.get(url);
+    var response = await client.get(url);
     if (response.statusCode == 200) {
       return json.decode(response.body)['text'];
     }
     return null;
   }
 
-  Future getAllBibles() async {
+  Future<List<Bible>> getAllBibles() async {
     var url = '$_baseUrl/find?key=$_apiKey';
-    var response = await http.get(url);
+    var response = await client.get(url);
     var bibles = json.decode(response.body)['bibles'];
     return bibles.map<Bible>((bible) => Bible.fromJSON(bible)).toList();
   }
@@ -55,7 +56,7 @@ class BibleService {
     String formattedVerse = parseVerse(searchParam);
     var url = '$_baseUrl/parse?passage=$formattedVerse&key=$_apiKey';
     print('first url $url');
-    var response = await http.get(url);
+    var response = await client.get(url);
     var passage = json.decode(response.body)['passage'];
     print('passage is: $passage');
     if (passage != '') {
@@ -68,7 +69,7 @@ class BibleService {
     var searchUrl = Uri.encodeFull(
         '$_baseUrl/search/$book.js?query=$searchParam&start=0&limit=20&sort=passage&key=$_apiKey');
     print('second url: $searchUrl');
-    var searchResponse = await http.get(searchUrl);
+    var searchResponse = await client.get(searchUrl);
     var results = json.decode(searchResponse.body)['results'];
     print('results is $results');
     return results;
@@ -107,7 +108,7 @@ class BibleService {
     List books;
     var url = '$_baseUrl/contents/$bible?key=$_apiKey';
     print('books url: $url');
-    var response = await http.get(url);
+    var response = await client.get(url);
     if (response.statusCode == 200) {
       books = json.decode(response.body)['books'];
       _books = books;

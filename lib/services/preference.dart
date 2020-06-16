@@ -8,9 +8,10 @@ class Preference {
     prefs = await SharedPreferences.getInstance();
   }
 
-  getSelectedBible() {
+  Bible getSelectedBible() {
     var selectedBible = prefs.getStringList('selectedBible');
     if (selectedBible == null) {
+      selectedBible = ['KJV', 'King James Version'];
       updateSelectedBible(selectedBible[0], selectedBible[1]);
     }
     return Bible(bible: selectedBible[0], title: selectedBible[1]);
@@ -34,8 +35,9 @@ class Preference {
       lastVerse = 'Genesis 1:1';
       prefs.setString('verse', lastVerse);
     }
-    print('difference ${now.difference(savedDay).inMinutes}');
-    if (now.difference(savedDay).inMinutes > 0) {
+    // Testing tip change .inDays to .inMinuts so that
+    // you get new verse every new minute
+    if (now.difference(savedDay).inDays > 0) {
       prefs.setString('today', now.toString());
       newVerse = getNewVerse(lastVerse);
       print('new bible verse: $newVerse');
@@ -49,7 +51,7 @@ class Preference {
     if (bibleVerse[0] == null) {
       newVerse = '${bibleVerse[1]} ${bibleVerse[2]}:${int.parse(bibleVerse[3]) + 1}';
       prefs.setString('verse', newVerse);
-    } else newVerse = '${bibleVerse[0]} ${bibleVerse[1]} ${bibleVerse[2]}:${int.parse(bibleVerse[3]) + 1}';
+    } else newVerse = '${bibleVerse[0]}${bibleVerse[1]} ${bibleVerse[2]}:${int.parse(bibleVerse[3]) + 1}';
     return newVerse;
   }
 
