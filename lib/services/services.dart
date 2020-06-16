@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 import 'package:http/http.dart' show Client;
 import 'package:onesheep_test/models/bible.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:onesheep_test/services/preference.dart';
+import 'package:onesheep_test/.env.dart';
 
 class BibleService {
   String _apiKey;
@@ -12,12 +13,12 @@ class BibleService {
   Preference preference = Preference();
   Client client = Client();
 
-  loadConfig() async {
+  initialize() async {
     await preference.initialize();
-    var configString = await rootBundle.loadString('config.json');
-    final config = json.decode(configString);
-    _apiKey = config['api_key'];
-    _baseUrl = config['base_url'];
+    _apiKey = environment['apiKey'];
+    _baseUrl = environment['baseUrl'];
+    if (_apiKey == null || _baseUrl == null)
+      throw Exception('Environment variable not found: Make sure you run "dart tools/env.dart"');
   }
 
   Bible loadSelectedBible() {

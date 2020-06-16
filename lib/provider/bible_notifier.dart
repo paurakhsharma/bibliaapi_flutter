@@ -50,7 +50,7 @@ class BibleNotifier extends ChangeNotifier {
   }
 
   initialize() async {
-    await bibleService.loadConfig();
+    await bibleService.initialize();
     await loadBible();
     await getVerseOfTheDay();
     stopLoading();
