@@ -105,6 +105,11 @@ class SearchScreen extends StatelessWidget {
                     ? 'Problem connecting to the internet \n'
                         'Make sure you have active internet connection'
                     : null,
+              ),
+              SnackBarLauncher(
+                error: bibleProvider.searchResult?.length != 0
+                    ? null
+                    : 'Cannot find anything, please search something else',
               )
             ],
           )),
