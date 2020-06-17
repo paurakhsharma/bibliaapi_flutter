@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:onesheep_test/models/bible.dart';
 import 'package:onesheep_test/services/services.dart';
@@ -9,6 +11,7 @@ class BibleNotifier extends ChangeNotifier {
   String _verse;
   String _searchParam;
   bool _loading = true;
+  bool _connectionError = false;
   List _searchResult = [];
   var bibleService = BibleService();
 
@@ -19,6 +22,7 @@ class BibleNotifier extends ChangeNotifier {
   get isLoading => _loading;
   get searchResult => _searchResult;
   get searchParam => _searchParam;
+  get error => _connectionError;
 
   startLoading() {
     _loading = true;
@@ -52,11 +56,16 @@ class BibleNotifier extends ChangeNotifier {
   initialize() async {
     await bibleService.initialize();
     await loadBible();
-    await getVerseOfTheDay();
-    stopLoading();
-    // Getting all the bibles takes way too long,
-    // So, let it run in the background.
-    getBibles();
+    await getVerseOfTheDay().catchError((error) {
+      _connectionError = true;
+      notifyListeners();
+    });
+    if (!_connectionError) {
+      stopLoading();
+      // Getting all the bibles takes way too long,
+      // So, let it run in the background.
+      getBibles();
+    }
   }
 
   loadBible() {
@@ -80,11 +89,17 @@ class BibleNotifier extends ChangeNotifier {
     // save the search param in the provider
     //so that we can access if from the search page as well
     _searchParam = searchParam;
-    _searchResult = await bibleService.search(searchParam, _selectedBible.bible);
-    stopLoading();
+    _searchResult =
+        await bibleService.search(searchParam, _selectedBible.bible).catchError((error) {
+      _connectionError = true;
+      notifyListeners();
+    });
+    if (!_connectionError) {
+      stopLoading();
+    }
   }
 
-  getVerseOfTheDay() async {
+  Future getVerseOfTheDay() async {
     List verseList = await bibleService.getVerseOfTheDay(_selectedBible.bible);
     _verse = verseList[0];
     _verseText = verseList[1];

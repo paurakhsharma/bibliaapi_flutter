@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onesheep_test/components/dropdown.dart';
+import 'package:onesheep_test/components/error.dart';
+import 'package:onesheep_test/components/loading.dart';
 import 'package:onesheep_test/components/searchbar.dart';
 import 'package:onesheep_test/provider/bible_notifier.dart';
 import 'package:onesheep_test/screens/search_screen.dart';
@@ -92,9 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       ],
                     )
-                  : Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                  : LoadingIndicator(),
+              SnackBarLauncher(
+                error: bibleProvider.error
+                    ? 'Problem connecting to the internet \n'
+                        'Make sure you have active internet connection'
+                    : null,
+              )
             ],
           )),
     );

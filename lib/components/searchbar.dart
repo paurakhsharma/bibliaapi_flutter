@@ -48,7 +48,7 @@ class _SearchBarState extends State<SearchBar> {
             errorStyle: TextStyle(color: Theme.of(context).accentColor),
             filled: true,
             fillColor: Color(0xffF9F9F9),
-            hintText: 'Lost Sheep',
+            hintText: 'Lost Sheep or Matthew 17:20',
             border: InputBorder.none,
             contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             suffixIcon: Icon(
