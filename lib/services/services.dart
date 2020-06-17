@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
 
 import 'package:http/http.dart' show Client;
 import 'package:onesheep_test/models/bible.dart';
@@ -14,6 +13,10 @@ class BibleService {
   Client client = Client();
 
   initialize() async {
+    /**
+     * Initialize shared preference,
+     * and load required app configs
+     */
     await preference.initialize();
     _apiKey = environment['apiKey'];
     _baseUrl = environment['baseUrl'];
@@ -25,19 +28,20 @@ class BibleService {
     return preference.getSelectedBible();
   }
 
-  updateSelectedBible(bible, title) {
+  updateSelectedBible(String bible, String title) {
     preference.updateSelectedBible(bible, title);
   }
 
-  parseVerse(verse) {
+  String parseVerse(String verse) {
+    // Remove blank spaces and replace : with .
+    // e.g if the input is 1 John 1:2 output will be 1John1.2
     return verse.replaceAll(' ', '').replaceAll(":", '.');
   }
 
-  Future getVerse(verse, bible) async {
+  Future<String> getVerse(String verse, String bible) async {
     String formatedVerse = parseVerse(verse);
     var url =
         '$_baseUrl/content/$bible.json?passage=$formatedVerse&style=bibleTextOnly&key=$_apiKey';
-    print('url is: $url');
     var response = await client.get(url);
     if (response.statusCode == 200) {
       return json.decode(response.body)['text'];
@@ -52,14 +56,12 @@ class BibleService {
     return bibles.map<Bible>((bible) => Bible.fromJSON(bible)).toList();
   }
 
-  Future search(searchParam, book) async {
+  Future<List> search(String searchParam, String book) async {
     // First check if the search parameter matches any verse
     String formattedVerse = parseVerse(searchParam);
     var url = '$_baseUrl/parse?passage=$formattedVerse&key=$_apiKey';
-    print('first url $url');
     var response = await client.get(url);
     var passage = json.decode(response.body)['passage'];
-    print('passage is: $passage');
     if (passage != '') {
       // if search param matches the verse return the matched verse
       var verse = await getVerse(formattedVerse, book);
@@ -67,48 +69,53 @@ class BibleService {
         {'title': passage, 'preview': verse}
       ];
     }
+    // If the search param doesn't match any verse,
+    // Make a passage query search.
     var searchUrl = Uri.encodeFull(
         '$_baseUrl/search/$book.js?query=$searchParam&start=0&limit=20&sort=passage&key=$_apiKey');
-    print('second url: $searchUrl');
     var searchResponse = await client.get(searchUrl);
     var results = json.decode(searchResponse.body)['results'];
-    print('results is $results');
     return results;
   }
 
-  getVerseOfTheDay(bible) async {
+  Future<List> getVerseOfTheDay(bible) async {
     var newVerse = await preference.getTodayVerse();
     var verseText = await getVerse(newVerse, bible);
     if (verseText == null) {
+      // if the new verse (i.e. last verse + 1) doesn't exists
+      // Find the new chapter (i.e last chapter + 1)
       var verseList = preference.verseStringToList(newVerse);
       var book = verseList[0] == null ? verseList[1] : '${verseList[0]} ${verseList[1]}';
       var chapter = verseList[2];
       var newChapter = '$book ${int.parse(chapter) + 1}';
       List chapters = await getChaptersFromBook(bible, book);
-      var newChapterFound = chapters.firstWhere((element) => element['passage'] == newChapter,
-          orElse: () => null);
+      var newChapterFound =
+          chapters.firstWhere((element) => element['passage'] == newChapter, orElse: () => null);
       if (newChapterFound != null) {
+        // if the new chapter is found
+        // save the new verse in the shared preference
+        // and return the verse text
         newVerse = "${newChapterFound['passage']}:1";
         preference.updateSharedPreferenceVerse(newVerse);
         verseText = await getVerse(newVerse, bible);
       } else {
+        // if the new chapter is not found
+        // Go to the new book
         int currentIndex = _books.indexWhere((element) => element['passage'] == book);
-        int newBookIndex = currentIndex+1 == _books.length ?  0 : currentIndex + 1;
+        // if this was the last book, set the index to the first book
+        int newBookIndex = currentIndex + 1 == _books.length ? 0 : currentIndex + 1;
         var newBook = _books[newBookIndex]['passage'];
-        newVerse =  "$newBook 1:1";
+        newVerse = "$newBook 1:1";
         preference.updateSharedPreferenceVerse(newVerse);
         verseText = await getVerse(newVerse, bible);
       }
     }
-    print('newVerse: $newVerse');
-    print('verseText: $verseText');
     return [newVerse, verseText];
   }
 
-  getChaptersFromBook(bible, book) async {
+  Future<List<Map>> getChaptersFromBook(String bible, String book) async {
     List books;
     var url = '$_baseUrl/contents/$bible?key=$_apiKey';
-    print('books url: $url');
     var response = await client.get(url);
     if (response.statusCode == 200) {
       books = json.decode(response.body)['books'];

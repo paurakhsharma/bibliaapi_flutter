@@ -54,11 +54,13 @@ class BibleNotifier extends ChangeNotifier {
     await loadBible();
     await getVerseOfTheDay();
     stopLoading();
+    // Getting all the bibles takes way too long,
+    // So, let it run in the background.
     getBibles();
   }
 
-  loadBible() async {
-    _selectedBible = await bibleService.loadSelectedBible();
+  loadBible() {
+    _selectedBible = bibleService.loadSelectedBible();
     _bibles = [_selectedBible];
     notifyListeners();
   }
@@ -74,11 +76,11 @@ class BibleNotifier extends ChangeNotifier {
   }
 
   search(searchParam) async {
-    print('search param is: $searchParam');
     startLoading();
+    // save the search param in the provider
+    //so that we can access if from the search page as well
     _searchParam = searchParam;
     _searchResult = await bibleService.search(searchParam, _selectedBible.bible);
-    print('search result: $_searchResult');
     stopLoading();
   }
 

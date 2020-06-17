@@ -27,7 +27,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       preference.prefs = await SharedPreferences.getInstance();
       var verse = preference.getTodayVerse();
-      expect(verse, 'Genesis 1:1');
+      expect(verse, 'John 1:1');
     });
 
     test('Test getTodayVerse when the user is opening the app next day', () async {
