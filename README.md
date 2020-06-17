@@ -1,18 +1,29 @@
 ![Flutter CI](https://github.com/paurakhsharma/onesheep_test/workflows/Flutter%20CI/badge.svg)
 
-# onesheep_test
+# Biblia API Flutter
 
-A new Flutter project.
+Flutter app build for mobile and web.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To run the project first of all you have to get the API key from [biblia](http://bibliaapi.com/).
+And follow the following steps.
 
-A few resources to get you started if this is your first Flutter project:
+1) Clone the repo and go to the root directory of the repo.
+2) Export environment variables `API_KEY` and `BASE_URL`.
+```bash
+export API_KEY=[API_KEY_FROM_Biblia] BASE_URL=https://api.biblia.com/v1/bible
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+3) Run `dart tool/env.dart`
+This will create a file `lib/.env.dart` with following contents:
+```dart
+final environment = {
+  "apiKey":"[API_KEY_FROM_Biblia]",
+  "baseUrl":"https://api.biblia.com/v1/bible"
+ };
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+4) That is all you need to do, now you can run the app using `flutter run`
+
+*Note: To build the flutter app for the web you need to be on a `dev` channel*
