@@ -7,11 +7,11 @@ Widget DropDown(context, {@required bibles, @required onChanged, @required dropD
     hint: dropDownValue == null
         ? Text(
             bibles[0].title,
-            style: kTextStyleAction(Theme.of(context).accentColor),
+            style: kTextStyleAction(context, Theme.of(context).accentColor),
           )
         : Text(
             dropDownValue.title,
-            style: kTextStyleAction(Theme.of(context).accentColor),
+            style: kTextStyleAction(context, Theme.of(context).accentColor),
           ),
     isExpanded: true,
     iconSize: 50.0,
@@ -26,7 +26,7 @@ Widget DropDown(context, {@required bibles, @required onChanged, @required dropD
             padding: EdgeInsets.all(20),
             child: Text(
               bible.title,
-              style: kTextStyleAction(Theme.of(context).accentColor),
+              style: kTextStyleAction(context, Theme.of(context).accentColor),
             ),
           ),
         );

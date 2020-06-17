@@ -6,6 +6,7 @@ import 'package:onesheep_test/components/searchbar.dart';
 import 'package:onesheep_test/provider/bible_notifier.dart';
 import 'package:onesheep_test/screens/search_screen.dart';
 import 'package:onesheep_test/utilities/constants.dart';
+import 'package:onesheep_test/utilities/responsive.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(isSmallScreen(context) ? 8.0 : 40.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }),
               SizedBox(
-                height: 10,
+                height: isSmallScreen(context) ? 10 : 30,
               ),
               Divider(
                 thickness: 1,
@@ -73,14 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: 70),
                         Text(
                           'Verse of the Day',
-                          style: kTextStyleTitle(context, 28.0),
+                          style: kTextStyleTitle(context, isSmallScreen(context) ? 28.0: 44.0),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
                           bibleProvider.verseText,
-                          style: kTextStyleVerse(),
+                          style: kTextStyleVerse(context),
                         ),
                         SizedBox(
                           height: 5,
@@ -88,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Align(
                           child: Text(
                             bibleProvider.verse,
-                            style: kTextStyleVerse(),
+                            style: kTextStyleVerse(context),
                           ),
                           alignment: Alignment.bottomRight,
                         )

@@ -43,7 +43,7 @@ class _SearchBarState extends State<SearchBar> {
               widget.onSubmitted(value);
             }
           },
-          style: kTextStyleAction(Theme.of(context).accentColor),
+          style: kTextStyleAction(context, Theme.of(context).accentColor),
           decoration: InputDecoration(
             errorStyle: TextStyle(color: Theme.of(context).accentColor),
             filled: true,

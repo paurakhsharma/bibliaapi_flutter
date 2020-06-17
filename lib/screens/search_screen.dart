@@ -5,6 +5,7 @@ import 'package:onesheep_test/components/loading.dart';
 import 'package:onesheep_test/components/searchbar.dart';
 import 'package:onesheep_test/provider/bible_notifier.dart';
 import 'package:onesheep_test/utilities/constants.dart';
+import 'package:onesheep_test/utilities/responsive.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(isSmallScreen(context) ? 8.0 : 40.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -72,17 +73,17 @@ class SearchScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         bibleProvider.searchResult[index]['title'],
-                                        style: kTextStyleTitle(context, 22.0),
+                                        style: kTextStyleTitle(context, isSmallScreen(context) ? 22.0: 32.0),
                                       ),
                                       SizedBox(
-                                        height: 5,
+                                        height: isSmallScreen(context) ? 5: 10,
                                       ),
                                       Text(
                                         bibleProvider.searchResult[index]['preview'],
-                                        style: kTextStyleVerse(),
+                                        style: kTextStyleVerse(context),
                                       ),
                                       SizedBox(
-                                        height: 10,
+                                        height: isSmallScreen(context) ? 10: 20,
                                       ),
                                     ],
                                   ),
