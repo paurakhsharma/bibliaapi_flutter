@@ -92,8 +92,8 @@ class BibleNotifier extends ChangeNotifier {
     _searchResult =
         await bibleService.search(searchParam, _selectedBible.bible).catchError((error) {
       _connectionError = true;
-      notifyListeners();
     });
+    notifyListeners();
     if (!_connectionError) {
       stopLoading();
     }
