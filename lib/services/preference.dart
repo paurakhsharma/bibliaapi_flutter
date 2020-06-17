@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final String defaultBible = 'KJV';
 final String defaultTitle = 'King James Version';
-final String defaultStartingVerse = 'John 1: 1';
+final String defaultStartingVerse = 'John 1:1';
 
 class Preference {
   SharedPreferences prefs;
