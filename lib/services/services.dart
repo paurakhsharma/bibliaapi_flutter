@@ -42,7 +42,6 @@ class BibleService {
     String formatedVerse = parseVerse(verse);
     var url =
         '$_baseUrl/content/$bible.json?passage=$formatedVerse&style=bibleTextOnly&key=$_apiKey';
-    print('url is: $url');
     var response = await client.get(url);
     if (response.statusCode == 200) {
       return json.decode(response.body)['text'];
@@ -117,7 +116,6 @@ class BibleService {
   Future<List<Map>> getChaptersFromBook(String bible, String book) async {
     List books;
     var url = '$_baseUrl/contents/$bible?key=$_apiKey';
-    print('books url: $url');
     var response = await client.get(url);
     if (response.statusCode == 200) {
       books = json.decode(response.body)['books'];
