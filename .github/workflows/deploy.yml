@@ -17,12 +17,7 @@ jobs:
         java-version: '12.x'
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '1.12.x'
-        channel: 'beta'
-    - name: Upgrades flutter
-      run: flutter upgrade
-    - name: Enable Web
-      run: flutter config --enable-web
+        flutter-version: '2.0.x'
     - name: Install dependencies
       run: flutter packages get
     - name: Initialize secrets
